@@ -1,15 +1,7 @@
 import unittest
-from fastapi import FastAPI
+
 from fastapi.testclient import TestClient
-import json
-
-app = FastAPI()
-
-
-@app.get("/")
-async def read_main():
-    return {"message": "Welcome to My Receipt Processor"}
-
+from main import app
 
 client = TestClient(app)
 
