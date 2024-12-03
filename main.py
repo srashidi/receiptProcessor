@@ -14,11 +14,14 @@ receipts = {}
 async def root():
     return {"message": "Welcome to My Receipt Processor"}
 
+
 @app.post("/receipts/process")
 async def process_receipt(receipt: dict):
-    receipt_id = str(uuid4())
-    receipts[receipt_id] = Receipt(**receipt)
+    receipt_id = str(uuid4())  # Generate random ID
+    receipts[receipt_id] = Receipt(**receipt)  # Add receipt to "database" with key of ID
+
     return {"id": receipt_id}
+
 
 @app.get("/receipts/{receipt_id}/points")
 async def get_receipt_points(receipt_id: str):

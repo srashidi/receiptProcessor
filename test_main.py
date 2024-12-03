@@ -2,7 +2,6 @@ import unittest
 
 from fastapi.testclient import TestClient
 
-import main
 from main import app
 
 client = TestClient(app)
@@ -17,7 +16,6 @@ def assert_receipt_points(receipt: dict, points: int):
     # Query the API for points earned from receipt
     response2 = client.get(f"/receipts/{receipt_id}/points")
     assert response2.status_code == 200
-    print(response2.json()['points'])
     assert response2.json()['points'] == points
 
 
