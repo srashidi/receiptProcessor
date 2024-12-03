@@ -1,4 +1,5 @@
 import unittest
+import uuid
 
 from fastapi.testclient import TestClient
 
@@ -78,6 +79,23 @@ class TestCase(unittest.TestCase):
         }
 
         assert_receipt_points(receipt, 109)
+
+    def test_bad_receipt(self):
+        receipt = {"retailer": "Somewhere Shady",
+                   "purchaseDate": "2022-01-01",
+                   "purchaseTime": "13:01",
+                   "total": "13.00"}
+
+        response = client.post("/receipts/process", json=receipt)
+        assert response.status_code == 400
+        print(response.json())
+        assert response.json() == {"detail": "The receipt is invalid"}
+
+    def test_invalid_receipt_id(self):
+        invalid_receipt_id = str(uuid.uuid4())
+        response = client.get(f"/receipts/{invalid_receipt_id}/points")
+        assert response.status_code == 404
+        assert response.json() == {"detail": "No receipt found for that id"}
 
 
 if __name__ == '__main__':
