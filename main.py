@@ -18,12 +18,13 @@ async def root():
 
 @app.post("/receipts/process")
 async def process_receipt(receipt: dict):
-    receipt_id = str(uuid4())  # Generate random ID
-
     try:
-        receipts[receipt_id] = Receipt(**receipt)  # Add receipt to "database" with key of ID
-    except ValidationError as e:
+        modeled_receipt = Receipt(**receipt)
+    except ValidationError:
         raise HTTPException(status_code=400, detail="The receipt is invalid")
+
+    receipt_id = str(uuid4())  # Generate random ID
+    receipts[receipt_id] = modeled_receipt  # Add receipt to "database" with key of ID
 
     return {"id": receipt_id}
 
