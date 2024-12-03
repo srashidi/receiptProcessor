@@ -88,7 +88,6 @@ class TestCase(unittest.TestCase):
 
         response = client.post("/receipts/process", json=receipt)
         assert response.status_code == 400
-        print(response.json())
         assert response.json() == {"detail": "The receipt is invalid"}
 
     def test_invalid_receipt_id(self):
